@@ -1,0 +1,73 @@
+<ng-template #modalNewUpdateBuy let-d="dismiss">
+    <div class="modal-header">
+        <h3 class="modal-title"> {{this.load.title}} compra </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModalReload()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="newUpdateBuy" (ngSubmit)="onSubmit()" #formDirective="ngForm" class="bg-white">
+            <div class="row form-group">
+                <div class="col-md-12 mb-12 mt-3">
+                    <label class="text-black">Producto</label>
+                    <p *ngIf="!load.dataProduct">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando
+                    </p>
+                    <ng-select2  *ngIf="load.dataProduct"  [data]="dataProduct" class="auto-grow form-control" 
+                    [placeholder]="'Seleccione'" formControlName="productId"></ng-select2>
+                    <div *ngIf="submitted && f.productId.errors">
+                        <div *ngIf="f.productId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black">Fecha Compra</label>
+                    <input type="date" formControlName="buyDate" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.buyDate.errors}" maxlength="100">
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black">Número Pedido</label>
+                    <input type="number" formControlName="invoiceNumber" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.invoiceNumber.errors}" maxlength="100">
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black">Precio Compra</label>
+                    <input type="number" formControlName="price" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.price.errors}" maxlength="100">
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black">Cantidad</label>
+                    <input type="number" formControlName="stock_quantity" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.price.errors}" maxlength="100">
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="supplierId">Proveedor</label>
+                    <p *ngIf="!load.dataSupplier">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando
+                    </p>
+                    <ng-select2  *ngIf="load.dataSupplier"  [data]="dataSupplier" class="auto-grow form-control"  [placeholder]="'Seleccione'" [width]="300" formControlName="supplierId"></ng-select2>
+                    <div *ngIf="submitted && f.supplierId.errors">
+                        <div *ngIf="f.supplierId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black">Canal</label>
+                    <p *ngIf="!load.dataChannel">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando
+                    </p>
+                    <ng-select2  *ngIf="load.dataChannel"  [data]="dataChannel" class="auto-grow form-control"  [placeholder]="'Seleccione'" [width]="300" formControlName="channelId"></ng-select2>
+                    <div *ngIf="submitted && f.channelId.errors">
+                        <div *ngIf="f.channelId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Registrar" class="btn btn-primary btn-block btn-md text-white"
+                        *ngIf="!load.createUpdateProduct">
+                    <h6 *ngIf="load.createUpdateProduct"> <i class="fa fa-spinner fa-spin"></i> {{this.load.title}} la compra,
+                        espere por favor</h6>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

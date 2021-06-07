@@ -1,0 +1,40 @@
+<ng-template #modalNewUpdateSubCategory let-d="dismiss">
+    <div class="modal-header">
+      <h3 class="modal-title"> {{this.load.title}} Sub Categoría </h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModalReload()"> 
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="newUpdateSubCategory" (ngSubmit)="onSubmit()" #formDirective="ngForm" class="bg-white">
+        <div class="row form-group">
+          <div class="col-md-12 mb-12 mt-3">
+            <label class="text-black" for="fname">Nombre</label>
+            <input type="text" formControlName="name" class="form-control" 
+            [ngClass]="{ 'is-invalid': submitted && f.name.errors}" maxlength="100">
+            <div *ngIf="submitted && f.name.errors">
+                <div *ngIf="f.name.errors.required">El campo es requerido</div>
+                <div *ngIf="f.name.errors.maxlength">El máximo de caracteres es 100</div>
+            </div>
+          </div>
+          <div class="col-md-12 mb-12 mt-3">
+            <label class="text-black" for="categoryId" >Categoría</label>
+            <p *ngIf="!load.data">
+                <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando 
+            </p>
+            <ng-select2  *ngIf="load.data" [data]="dataCategory" class="form-control"  [placeholder]="'Seleccione'" [width]="300" formControlName="categoryId"></ng-select2>
+            <div *ngIf="submitted && f.categoryId.errors">
+                <div *ngIf="f.categoryId.errors.required">El campo es requerido</div>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12">
+            <input type="submit" value="Registrar" class="btn btn-primary btn-block btn-md text-white" *ngIf="!load.createUpdateSubCategory">
+            <h6 *ngIf="load.createUpdateSubCategory"> <i class="fa fa-spinner fa-spin"></i> {{load.createUpdate}} la Sub Categoría, espere por favor</h6>
+          </div>
+        </div>
+      </form>
+    </div>
+</ng-template>
+

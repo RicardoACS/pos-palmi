@@ -1,0 +1,110 @@
+<ng-template #modalNewUpdateClient let-d="dismiss">
+    <div class="modal-header">
+        <h3 class="modal-title"> {{this.load.title}} cliente </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModalReload()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="newUpdateClient" (ngSubmit)="onSubmit()" #formDirective="ngForm" class="bg-white">
+            <div class="row form-group">
+                <div class="col-md-4 mb-4 mt-3">
+                    <label class="text-black" for="fname">Rut</label>
+                    <input type="text" formControlName="identifier" class="form-control" formatRut
+                        [ngClass]="{ 'is-invalid': submitted && f.identifier.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.identifier.errors">
+                        <div *ngIf="f.identifier.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mt-3">
+                    <label class="text-black" for="fname">Nombre</label>
+                    <input type="text" formControlName="name" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.name.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.name.errors">
+                        <div *ngIf="f.name.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mt-3">
+                    <label class="text-black" for="fname">Apellido</label>
+                    <input type="text" formControlName="lastName" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.lastName.errors">
+                        <div *ngIf="f.lastName.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="fname">Email</label>
+                    <input type="text" formControlName="email" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.email.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.email.errors">
+                        <div *ngIf="f.email.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="fname">Instagram</label>
+                    <input type="text" formControlName="instagram" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.instagram.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.instagram.errors">
+                        <div *ngIf="f.instagram.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="fname">Calle</label>
+                    <input type="text" formControlName="address" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.address.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.address.errors">
+                        <div *ngIf="f.address.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mt-3">
+                    <label class="text-black" for="fname">Número</label>
+                    <input type="number" formControlName="numberHouse" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.numberHouse.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.numberHouse.errors">
+                        <div *ngIf="f.numberHouse.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mt-3">
+                    <label class="text-black" for="fname">Depto</label>
+                    <input type="number" formControlName="deptoNumber" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.deptoNumber.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.deptoNumber.errors">
+                        <div *ngIf="f.deptoNumber.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="cityId">Ciudad</label>
+                    <p *ngIf="!load.dataCity">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando
+                    </p>
+                    <ng-select2 *ngIf="load.dataCity" [data]="dataCity" class="form-control"
+                        [placeholder]="'Seleccione'" [width]="300" formControlName="cityId" (valueChanged)="getStateByCity($event) || updateCityText($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.cityId.errors">
+                        <div *ngIf="f.cityId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="stateId">Comuna</label>
+                    <p *ngIf="!load.dataState">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando
+                    </p>
+                    <ng-select2 *ngIf="load.dataState" [data]="dataState" class="form-control"
+                        [placeholder]="'Seleccione'" [width]="300" formControlName="stateId" (valueChanged)="updateStateText($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.stateId.errors">
+                        <div *ngIf="f.stateId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Registrar" class="btn btn-primary btn-block btn-md text-white"
+                        *ngIf="!load.createUpdate">
+                    <h6 *ngIf="load.createUpdate"> <i class="fa fa-spinner fa-spin"></i> Creando el cliente,
+                        espere por favor</h6>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

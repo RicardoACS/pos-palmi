@@ -1,0 +1,57 @@
+<section>
+    <app-page-header [menu]="'Producto'" [subMenu]="''"></app-page-header>
+    <div class="min-height-200px">
+                
+        <!-- table category -->
+        <div class="pd-20 card-box mb-30 table-responsive">
+            <div class="clearfix mb-20">
+                <div class="pull-left">
+                    <h4 class="text-blue h4">Listado de productos</h4>
+                </div>
+                <div class="pull-right">
+                    <button (click)="openModal(null)" class="btn btn-outline-dark btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button">
+                        <i class="micon dw dw-add"></i> Agregar producto
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped ">
+                <thead>
+                    <tr> 
+                        <th scope="col">#</th>
+                        <th scope="col">Foto</th>
+                        <th scope="col">Identificador</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">SubCategoría</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="load.data">
+                        <tr *ngFor="let product of dataProduct" >
+                            <th scope="row">{{product.product.id}}</th>
+                            <td><img src="{{product.product.photo ? product.product.photo : '../../../../assets/images/enturno-logo.jpeg'}}" width="70" height="70"/></td>
+                            <td>{{product.product.identifier.replace("'", "-")}}</td>
+                            <td>{{product.product.sub_category.category.name + ' ' + product.product.sub_category.name + ' ' + product.product.name}}</td>
+                            <td>{{ product.value | currency:'USD' : 'symbol' : '1.0-0' }}</td>
+                            <td>{{product.product.sub_category.category.name}}</td>
+                            <td>{{product.product.sub_category.name}}</td>
+                            <td><span class="badge badge-warning scroll-click" (click)="openModal(product)" >Editar</span></td>
+                        </tr>
+                    </ng-container>
+                    <tr *ngIf="!load.data">
+                        <td rowspan="8" colspan="8" align="center" >
+                            <i class="fa fa-spinner fa-spin fa-3x"></i> 
+                            <h4>
+                                Cargando
+                            </h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<app-new-product #modalNewUpdateProduct></app-new-product>

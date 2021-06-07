@@ -1,0 +1,13 @@
+export interface IClient {
+    id: number;
+    identifier: string;
+    name: string;
+    lastName: string;
+    email: string;
+    instagram: string
+    address: string;
+    state: string;
+    city: string;
+    deptoNumber: string;
+    numberHouse: string;
+}

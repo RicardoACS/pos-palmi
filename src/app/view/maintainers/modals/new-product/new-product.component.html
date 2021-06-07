@@ -1,0 +1,83 @@
+<ng-template #modalNewUpdateProduct let-d="dismiss">
+    <div class="modal-header">
+        <h3 class="modal-title"> {{this.load.title}} producto </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModalReload()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="newUpdateProduct" (ngSubmit)="onSubmit()" #formDirective="ngForm" class="bg-white">
+            <div class="row form-group">
+                <div class="col-md-4 mb-4 mt-3">
+                    <label class="text-black">Identificador</label>
+                    <input type="text" formControlName="identifier" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.identifier.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.identifier.errors">
+                        <div *ngIf="f.identifier.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mt-3">
+                    <label class="text-black">Nombre</label>
+                    <input type="text" formControlName="name" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.name.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.name.errors">
+                        <div *ngIf="f.name.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mt-3">
+                    <label class="text-black">Precio</label>
+                    <input type="number" formControlName="price" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.price.errors}" maxlength="100">
+                    <div *ngIf="submitted && f.price.errors">
+                        <div *ngIf="f.price.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="categoryId">Categoría</label>
+                    <p *ngIf="!load.dataCategory">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando
+                    </p>
+                    <ng-select2 *ngIf="load.dataCategory" [data]="dataCategory" class="form-control"
+                        [placeholder]="'Seleccione'" [width]="300" formControlName="categoryId" (valueChanged)="getSubCategory($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.categoryId.errors">
+                        <div *ngIf="f.categoryId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black">SubCategoría</label>
+                    <p *ngIf="!load.dataSubCategory">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Esperando una categoría
+                    </p>
+                    <ng-select2 *ngIf="load.dataSubCategory" [data]="dataSubCategory" class="form-control"
+                        [placeholder]="'Seleccione'" [width]="300" formControlName="subCategoryId">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.subCategoryId.errors">
+                        <div *ngIf="f.subCategoryId.errors.required">El campo es requerido</div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-12 mt-3">
+                    <label class="text-black">Foto</label>
+                    <input type="text" formControlName="photo" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.photo.errors}">
+                </div>
+                <div class="col-md-12 mb-12 mt-3">
+                    <label class="text-black" for="fname">Descripción</label>
+                    <textarea formControlName="description" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.description.errors}" maxlength="100"></textarea>
+                    <div *ngIf="submitted && f.description.errors">
+                        <div *ngIf="f.description.errors.maxlength">El máximo de caracteres es 100</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Registrar" class="btn btn-primary btn-block btn-md text-white"
+                        *ngIf="!load.createUpdateProduct">
+                    <h6 *ngIf="load.createUpdateProduct"> <i class="fa fa-spinner fa-spin"></i> Creando el producto,
+                        espere por favor</h6>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

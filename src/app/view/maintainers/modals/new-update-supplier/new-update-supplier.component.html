@@ -1,0 +1,37 @@
+<ng-template #modalNewUpdateSupplier let-d="dismiss">
+    <div class="modal-header">
+      <h3 class="modal-title"> {{this.load.title}} Proveedor </h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModalReload()"> 
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="newUpdateSupplier" (ngSubmit)="onSubmit()" #formDirective="ngForm" class="bg-white">
+        <div class="row form-group">
+          <div class="col-md-12 mb-12 mt-3">
+            <label class="text-black" for="fname">Nombre</label>
+            <input type="text" formControlName="name" class="form-control" 
+            [ngClass]="{ 'is-invalid': submitted && f.name.errors}" maxlength="100">
+            <div *ngIf="submitted && f.name.errors">
+              <div *ngIf="f.name.errors.maxlength">El máximo de caracteres es 100</div>
+            </div>
+          </div>
+          <div class="col-md-12 mb-12 mt-3">
+            <label class="text-black" for="fname">Descripción</label>
+            <input type="text" formControlName="description" class="form-control" 
+            [ngClass]="{ 'is-invalid': submitted && f.description.errors}" maxlength="100">
+            <div *ngIf="submitted && f.description.errors">
+              <div *ngIf="f.name.errors.maxlength">El máximo de caracteres es 100</div>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-12">
+            <input type="submit" value="Registrar" class="btn btn-primary btn-block btn-md text-white" *ngIf="!load.createUpdateSupplier">
+            <h6 *ngIf="load.createUpdateSupplier"> <i class="fa fa-spinner fa-spin"></i> {{this.load.title}} el proveedor, espere por favor</h6>
+          </div>
+        </div>
+      </form>
+    </div>
+</ng-template>
+

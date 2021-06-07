@@ -1,0 +1,47 @@
+<section>
+    <app-page-header menu="Categorías" subMenu=""></app-page-header>
+    <div class="min-height-200px">
+                
+        <!-- table category -->
+        <div class="pd-20 card-box mb-30 table-responsive">
+            <div class="clearfix mb-20">
+                <div class="pull-left">
+                    <h4 class="text-blue h4">Listado de categorías</h4>
+                </div>
+                <div class="pull-right">
+                    <button (click)="openModal(null)" class="btn btn-outline-dark btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button">
+                        <i class="micon dw dw-add"></i> Agregar categoría
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped ">
+                <thead>
+                    <tr> 
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="load.data">
+                        <tr *ngFor="let category of dataCategory" >
+                            <th scope="row">{{category.id}}</th>
+                            <td>{{category.name}}</td>
+                            <td><span class="badge badge-warning scroll-click" (click)="openModal(category)" >Editar</span></td>
+                        </tr>
+                    </ng-container>
+                    <tr *ngIf="!load.data">
+                        <td rowspan="3" colspan="3" align="center" >
+                            <i class="fa fa-spinner fa-spin fa-3x"></i> 
+                            <h4>
+                                Cargando
+                            </h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<app-new-category #modalNewCategory></app-new-category>

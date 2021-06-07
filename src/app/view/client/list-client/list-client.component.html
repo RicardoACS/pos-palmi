@@ -1,0 +1,52 @@
+<section>
+    <app-page-header menu="Cliente" subMenu=""></app-page-header>
+    <div class="min-height-200px">
+                
+        <!-- table category -->
+        <div class="pd-20 card-box mb-30 table-responsive">
+            <div class="clearfix mb-20">
+                <div class="pull-left">
+                    <h4 class="text-blue h4">Listado de clientes</h4>
+                </div>
+                <div class="pull-right">
+                    <button (click)="openModal(null)" class="btn btn-outline-dark btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button">
+                        <i class="micon dw dw-add"></i> Agregar cliente
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped ">
+                <thead>
+                    <tr> 
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Instagram</th>
+                        <th scope="col">Dirección</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="load.data">
+                        <tr *ngFor="let client of dataClient" >
+                            <th scope="row">{{client.id}}</th>
+                            <td>{{client.name + ' ' + client.last_name}}</td>
+                            <td>{{client.email}}</td>
+                            <td>{{client.instagram}}</td>
+                            <td>{{client.address + ' ' + client.number_house + (client.depto_number !== null ? ', Depto ' + client.depto_number : '') + ', ' + client.city + ', ' + client.state}}</td>
+                            <td><span class="badge badge-warning scroll-click" (click)="openModal(client)" >Editar</span></td>
+                        </tr>
+                    </ng-container>
+                    <tr *ngIf="!load.data">
+                        <td rowspan="5" colspan="5" align="center" >
+                            <i class="fa fa-spinner fa-spin fa-3x"></i> 
+                            <h4>
+                                Cargando
+                            </h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<app-new-update-client #modalNewUpdateClient></app-new-update-client>
