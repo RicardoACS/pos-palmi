@@ -1,10 +1,9 @@
-import { IBuy } from "./IBuy";
-import { IBuyRequest } from "./IBuyRequest";
-import { IProduct } from "./IProduct";
+import { IBuy } from './IBuy';
+import { IProduct } from './IProduct';
 
 export interface IStock {
-    id: number;
-    quantity: number;
-    buy: IBuy;
-    product: IProduct;
+  id: number;
+  quantity: number;
+  buy: IBuy;
+  product: IProduct;
 }

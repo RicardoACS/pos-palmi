@@ -35,7 +35,7 @@
                             <td>{{stock.buy.price | currency:'USD' : 'symbol' : '1.0-0'}}</td>
                             <td>{{stock.buy.supplier.name}}</td>
                             <td>{{stock.buy.channel.name}}</td>
-                            <td><span class="badge badge-warning scroll-click" (click)="openModal(client)" >Editar</span></td>
+                            <td><span class="badge badge-warning scroll-click" (click)="openModal(stock)" >Editar</span></td>
                         </tr>
                     </ng-container>
                     <tr *ngIf="!load.data">

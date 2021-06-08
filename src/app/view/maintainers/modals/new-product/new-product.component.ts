@@ -71,17 +71,17 @@ export class NewProductComponent implements OnInit {
         data == null ? '' : data.product.description,
         [Validators.maxLength(100)],
       ],
-      photo: [data == null ? '' : data.product.photo, [Validators.maxLength(255)]],
+      photo: [
+        data == null ? '' : data.product.photo,
+        [Validators.maxLength(255)],
+      ],
       state: [1],
       categoryId: [data == null ? '' : data.product.sub_category.category.id],
       subCategoryId: [
         data == null ? '' : data.product.sub_category.id,
         [Validators.required],
       ],
-      price: [
-        data == null ? '' : data.value,
-        [Validators.maxLength(100)],
-      ]
+      price: [data == null ? '' : data.value, [Validators.maxLength(100)]],
     });
   }
 
@@ -98,11 +98,12 @@ export class NewProductComponent implements OnInit {
     this.posService.getCategories().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          data.data.forEach((element: Category) => {
+          var c = data.data as object[];
+          c.forEach((element: Category) => {
             categories.push({
               id: element.id,
-              text: element.name
-            })
+              text: element.name,
+            });
           });
           this.load.dataCategory = true;
         }, 2000);
@@ -119,11 +120,12 @@ export class NewProductComponent implements OnInit {
     this.load.dataSubCategory = false;
     this.posService.getSubCategoriesByCategoryId(categoryId).subscribe(
       (data: Response) => {
-        data.data.forEach((element: SubCategory) => {
+        var sc = data.data as object[];
+        sc.forEach((element: SubCategory) => {
           subCategory.push({
             id: element.id,
-            text: element.name
-          })
+            text: element.name,
+          });
         });
         this.dataSubCategory = subCategory;
         this.load.dataSubCategory = true;

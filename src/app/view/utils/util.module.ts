@@ -2,13 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageHeaderComponent } from '../utils/page-header/page-header.component';
 
-
 @NgModule({
   declarations: [PageHeaderComponent],
-  imports: [
-    CommonModule,    
-  ],
+  imports: [CommonModule],
   exports: [PageHeaderComponent],
-  providers: []
+  providers: [],
 })
-export class UtilModule { }
+export class UtilModule {}

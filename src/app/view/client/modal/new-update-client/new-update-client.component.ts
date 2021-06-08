@@ -112,12 +112,13 @@ export class NewUpdateClientComponent implements OnInit {
     var cities = [];
     this.backofficeService.getCities().subscribe(
       (data: Response) => {
-        data.data.forEach((element => {
+        var territorial = data.data as object[];
+        territorial.forEach((element) => {
           cities.push({
-            id: element["id"],
-            text: element["name"]
-          })
-        }));
+            id: element['id'],
+            text: element['name'],
+          });
+        });
         this.dataCity = cities;
         this.load.dataCity = true;
         if (cityName) {
@@ -138,12 +139,13 @@ export class NewUpdateClientComponent implements OnInit {
     var states = [];
     this.backofficeService.getStateByCityId(cityId).subscribe(
       (data: Response) => {
-        data.data.forEach((element => {
+        var territorial = data.data as object[];
+        territorial.forEach((element) => {
           states.push({
-            id: element["id"],
-            text: element["name"]
-          })
-        }));
+            id: element['id'],
+            text: element['name'],
+          });
+        });
         this.dataState = states;
         this.load.dataState = true;
         if (stateName) {
@@ -183,6 +185,7 @@ export class NewUpdateClientComponent implements OnInit {
       city: data.city,
       deptoNumber: data.deptoNumber,
       numberHouse: data.numberHouse,
+      last_name: null
     };
     if (data.id === null) {
       this.posService.createClient(data).subscribe((response: Response) => {
@@ -200,12 +203,19 @@ export class NewUpdateClientComponent implements OnInit {
   }
 
   updateCityText(value) {
-    this.newUpdateClient.get('city').setValue(this.dataCity.filter(f => Number(f.id) === Number(value))[0].text)
-    
+    this.newUpdateClient
+      .get('city')
+      .setValue(
+        this.dataCity.filter((f) => Number(f.id) === Number(value))[0].text
+      );
   }
 
   updateStateText(value) {
-    this.newUpdateClient.get('state').setValue(this.dataState.filter(f => Number(f.id) === Number(value))[0].text)
+    this.newUpdateClient
+      .get('state')
+      .setValue(
+        this.dataState.filter((f) => Number(f.id) === Number(value))[0].text
+      );
   }
 
   openModal(data: any) {

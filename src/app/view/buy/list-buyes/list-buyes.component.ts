@@ -28,7 +28,7 @@ export class ListBuyesComponent implements OnInit {
   getAllBuyes() {
     this.posService.getAllBuyes().subscribe(
       (data: Response) => {
-        this.dataStock = <IStock[]>data.data;
+        this.dataStock = data.data as IStock[];
         this.load.data = true;
       },
       (error: HttpErrorResponse) => {

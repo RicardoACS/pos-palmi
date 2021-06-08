@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Select2OptionData } from 'ng-select2';
 import { Subscription } from 'rxjs';
-import { IChannel } from 'src/app/classes/IChannel';
 import { IPrice } from 'src/app/classes/IPrice';
-import { IProduct } from 'src/app/classes/IProduct';
+import { IStockRequest } from 'src/app/classes/IStockRequest';
 import { ISupplier } from 'src/app/classes/ISupplier';
 import { Response } from 'src/app/classes/Response';
 import { PosService } from 'src/app/services/pos.service';
 import { ModalService } from 'src/app/view/utils/modal/modal.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-new-update-buyes',
@@ -28,7 +28,6 @@ export class NewUpdateBuyesComponent implements OnInit {
   submitted = false;
   load = {
     title: 'Crear nueva',
-    createUpdateProduct: false,
     dataProduct: false,
     dataSupplier: false,
     dataChannel: false,
@@ -65,15 +64,18 @@ export class NewUpdateBuyesComponent implements OnInit {
     let products = [];
     this.posService.getProducts('1').subscribe(
       (data: Response) => {
-        data.data.forEach((element: IPrice) => {
-          console.log(element)
+        var p = data.data as object[];
+        p.forEach((element: IPrice) => {
+          console.log(element);
           products.push({
             id: element.product.id,
-            text: `${element.product.identifier.replace("'", "-")} - ${element.product.sub_category.category.name} ${element.product.sub_category.name} ${element.product.name}`
+            text: `${element.product.identifier.replace("'", '-')} - ${
+              element.product.sub_category.category.name
+            } ${element.product.sub_category.name} ${element.product.name}`,
           });
         });
         this.dataProduct = products;
-        console.log(this.dataProduct)
+        console.log(this.dataProduct);
         this.load.dataProduct = true;
       },
       (error: HttpErrorResponse) => {
@@ -86,11 +88,12 @@ export class NewUpdateBuyesComponent implements OnInit {
     var suppliers = [];
     this.posService.getSuppliers().subscribe(
       (data: Response) => {
-        data.data.forEach((element: ISupplier) => {
+        var s = data.data as object[];
+        s.forEach((element: ISupplier) => {
           suppliers.push({
             id: element.id,
-            text: element.name
-          })
+            text: element.name,
+          });
         });
         this.dataSupplier = suppliers;
         this.load.dataSupplier = true;
@@ -105,11 +108,12 @@ export class NewUpdateBuyesComponent implements OnInit {
     var channels = [];
     this.posService.getChannels().subscribe(
       (data: Response) => {
-        data.data.forEach((element: ISupplier) => {
+        var channel = data.data as object[];
+        channel.forEach((element: ISupplier) => {
           channels.push({
             id: element.id,
-            text: element.name
-          })
+            text: element.name,
+          });
         });
         this.dataChannel = channels;
         this.load.dataChannel = true;
@@ -125,31 +129,32 @@ export class NewUpdateBuyesComponent implements OnInit {
       this.load.title = 'Editar';
     }
     this.newUpdateBuy = this.fb.group({
-      id: [data == null ? undefined : data.product.id],
+      id: [data == null ? undefined : data.id],
+      buy_id: [data == null ? undefined : data.buy.id],
       productId: [
-        data == null ? '' : data,
+        data == null ? '' : data.product.id,
         [Validators.required, Validators.maxLength(100)],
       ],
       buyDate: [
-        data == null ? '' : data,
+        data == null
+          ? moment().format('yyyy-MM-DD')
+          : moment(data.buy.buy_date).format('yyyy-MM-DD'),
         [Validators.required, Validators.maxLength(100)],
       ],
       invoiceNumber: [
-        data == null ? '' : data.product.description,
+        data == null ? '' : data.buy.invoice_number,
         [Validators.maxLength(100)],
       ],
-      price: [
-        data == null ? '' : data.product.photo,
-        [Validators.maxLength(255)],
-      ],
-      stock_quantity: [
-        data == null ? '' : data.product.sub_category.category.id,
-      ],
+      price: [data == null ? '' : data.buy.price, [Validators.maxLength(255)]],
+      stock_quantity: [data == null ? '' : data.quantity],
       supplierId: [
-        data == null ? '' : data.product.sub_category.id,
+        data == null ? '' : data.buy.supplier.id,
         [Validators.required],
       ],
-      channelId: [data == null ? '' : data.value, [Validators.maxLength(100)]],
+      channelId: [
+        data == null ? '' : data.buy.channel.id,
+        [Validators.maxLength(100)],
+      ],
     });
   }
 
@@ -166,8 +171,44 @@ export class NewUpdateBuyesComponent implements OnInit {
       return;
     }
 
-    //await this.createUpdateClient(this.newUpdateClient.value);
+    await this.createUpdateBuy(this.newUpdateBuy.value);
   }
+
+  async createUpdateBuy(data) {
+    var stock: IStockRequest = {
+      id: data.id,
+      quantity: data.stock_quantity,
+      productId: data.productId,
+      buy: {
+        id: data.buy_id,
+        buyDate: data.buyDate,
+        channelId: data.channelId,
+        invoiceNumber: data.invoiceNumber,
+        price: data.price,
+        supplierId: data.supplierId,
+      },
+    };
+    if (stock.id === null) {
+      this.posService.createStock(stock).subscribe((response: Response) => {
+        this.load.createUpdate = false;
+        this.cleanForm();
+      });
+    } else {
+      this.posService
+        .updateStock(stock.buy.id, stock.id, stock)
+        .subscribe((response: Response) => {
+          this.load.createUpdate = false;
+          this.load.title = '';
+          this.closeModalReload();
+        });
+    }
+  }
+
+  cleanForm() {
+    this.newUpdateBuy.reset();
+    this.submitted = false;
+  }
+
   openModal(data: any) {
     this.formGroupValidation(data);
     this.modalInstance = this._modalService.open(this.modalTemplateRef, {
@@ -181,7 +222,9 @@ export class NewUpdateBuyesComponent implements OnInit {
   }
 
   closeModalReload() {
-    window.location.reload();
+    if (this.load.title !== 'Editar') {
+      window.location.reload();
+    }
     this.modalInstance ? this.modalInstance.close() : null;
   }
 

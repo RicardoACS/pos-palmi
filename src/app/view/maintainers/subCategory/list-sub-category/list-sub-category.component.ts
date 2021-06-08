@@ -8,20 +8,18 @@ import { ModalService } from 'src/app/view/utils/modal/modal.service';
 @Component({
   selector: 'app-list-sub-category',
   templateUrl: './list-sub-category.component.html',
-  styleUrls: ['./list-sub-category.component.css']
+  styleUrls: ['./list-sub-category.component.css'],
 })
 export class ListSubCategoryComponent implements OnInit {
-
   dataSubCategory: SubCategory[];
   load = {
-    data: false
+    data: false,
   };
 
   constructor(
     private _ModalService: ModalService,
     private posService: PosService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getSubCategories();
@@ -31,7 +29,7 @@ export class ListSubCategoryComponent implements OnInit {
     this.posService.getSubCategories().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          this.dataSubCategory = <SubCategory[]> data.data;
+          this.dataSubCategory = <SubCategory[]>data.data;
           this.load.data = true;
         }, 2000);
       },

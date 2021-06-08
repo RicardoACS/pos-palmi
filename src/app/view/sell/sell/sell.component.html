@@ -1,0 +1,96 @@
+<section>
+    <app-page-header menu="Venta" subMenu=""></app-page-header>
+    <div class="min-height-200px">
+
+
+        <div class="pd-20 card-box mb-30">
+            <div class="clearfix mb-20">
+                <div class="pull-left">
+                    <h4 class="text-blue h4">Datos de la Venta</h4>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="fname">Fecha de venta</label>
+                    <input type="date" class="form-control" [(ngModel)]="sellDate"> 
+                </div>
+                <div class="col-md-6 mb-6 mt-3">
+                    <label class="text-black" for="fname">Cliente</label>
+                    <p *ngIf="!load.dataClient">
+                        <i class="fa fa-spinner fa-spin fa-0x"></i> Cargando Clientes
+                    </p>
+                    <ng-select2 *ngIf="load.dataClient" [data]="dataClient" class="form-control"
+                        [placeholder]="'Seleccione'" [width]="300" [(ngModel)]="clientId">
+                    </ng-select2>
+                </div>
+            </div>
+        </div>
+
+        <!-- table category -->
+        <div class="pd-20 card-box mb-30 table-responsive">
+            <div class="clearfix mb-20">
+                <div class="pull-left">
+                    <h4 class="text-blue h4">Productos a vender</h4>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-9 mb-9 mt-3">
+                    <label class="text-black h4" for="fname">Identificador del Producto </label>
+                    <input type="text" class="form-control" maxlength="100" autofocus (keyup)="searchProduct()" [(ngModel)]="code" 
+                    [readonly]="!load.dataSell && load.sell"> 
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Identificador</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="load.dataSell">
+                        <tr *ngFor="let sell of dataSell; let i = index">
+                            <th scope="row">{{i  + 1 }}</th>
+                            <td>{{ sell.product.identifier.replace("'", "-") }}</td>
+                            <td>{{ sell.product.sub_category.category.name + ' ' + sell.product.sub_category.name + ' ' + sell.product.name}}</td>
+                            <td>
+                                {{sell.quantity}} 
+                            </td>
+                            <td>{{sell.valueSell | currency:'USD' : 'symbol' : '1.0-0'}}</td>
+                            <td><span class="badge badge-danger scroll-click" (click)="deleteSell(i)">Eliminar</span>
+                            </td>
+                        </tr>
+                        <tr style="background-color: black;">
+                            <td style="color: white;" class="h4" rowspan="4" colspan="4" align="center">Total</td>
+                            <td style="color: white;" class="h4">{{totalSell | currency:'USD' : 'symbol' : '1.0-0'}}</td>
+                            <td></td>
+                        </tr>
+                    </ng-container>
+                    <tr *ngIf="!load.sell">
+                        <td rowspan="6" colspan="6" align="center">
+                            <i class="fa fa-spinner fa-spin fa-3x"></i>
+                            <h4>
+                                Esperando Productos por vender
+                            </h4>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!load.dataSell && load.sell">
+                        <td rowspan="6" colspan="6" align="center">
+                            <i class="fa fa-spinner fa-spin fa-3x"></i>
+                            <h4>
+                                Buscando Producto
+                            </h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pd-20 card-box mb-30">
+
+            </div>
+        </div>
+    </div>
+</section>

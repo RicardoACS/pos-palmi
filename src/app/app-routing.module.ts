@@ -22,8 +22,12 @@ const routes: Routes = [
   {
     path: 'stock',
     loadChildren: () => import('./view/stock/stock.module').then(m => m.StockModule)
+  },
+  {
+    path: 'sell',
+    loadChildren: () => import('./view/sell/sell.module').then(m => m.SellModule)
   }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

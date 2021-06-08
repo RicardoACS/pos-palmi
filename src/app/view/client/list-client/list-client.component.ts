@@ -8,20 +8,18 @@ import { ModalService } from '../../utils/modal/modal.service';
 @Component({
   selector: 'app-list-client',
   templateUrl: './list-client.component.html',
-  styleUrls: ['./list-client.component.css']
+  styleUrls: ['./list-client.component.css'],
 })
 export class ListClientComponent implements OnInit {
-
-  dataClient: IClient[]
+  dataClient: IClient[];
   load = {
-    data: false
+    data: false,
   };
 
   constructor(
     private _ModalService: ModalService,
     private posService: PosService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getClient();
@@ -31,7 +29,7 @@ export class ListClientComponent implements OnInit {
     this.posService.getClient().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          this.dataClient = <IClient[]> data.data;
+          this.dataClient = data.data as IClient[];
           this.load.data = true;
         }, 2000);
       },
@@ -44,5 +42,4 @@ export class ListClientComponent implements OnInit {
   openModal(data) {
     this._ModalService.open(data, null);
   }
-
 }

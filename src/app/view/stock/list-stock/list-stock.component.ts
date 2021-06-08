@@ -8,20 +8,18 @@ import { ModalService } from '../../utils/modal/modal.service';
 @Component({
   selector: 'app-list-stock',
   templateUrl: './list-stock.component.html',
-  styleUrls: ['./list-stock.component.css']
+  styleUrls: ['./list-stock.component.css'],
 })
 export class ListStockComponent implements OnInit {
-
   public dataStock: IStockQuantity[];
   load = {
-    data: false
-  }
+    data: false,
+  };
 
   constructor(
     private _ModalService: ModalService,
     private posService: PosService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getStock();
@@ -31,7 +29,7 @@ export class ListStockComponent implements OnInit {
     this.posService.getAllStock().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          this.dataStock = <IStockQuantity[]> data.data;
+          this.dataStock = <IStockQuantity[]>data.data;
           this.load.data = true;
         }, 2000);
       },
@@ -40,5 +38,4 @@ export class ListStockComponent implements OnInit {
       }
     );
   }
-
 }

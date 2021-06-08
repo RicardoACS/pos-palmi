@@ -8,20 +8,18 @@ import { ModalService } from 'src/app/view/utils/modal/modal.service';
 @Component({
   selector: 'app-list-supplier',
   templateUrl: './list-supplier.component.html',
-  styleUrls: ['./list-supplier.component.css']
+  styleUrls: ['./list-supplier.component.css'],
 })
 export class ListSupplierComponent implements OnInit {
-
   dataSupplier: ISupplier[];
   load = {
-    data: false
+    data: false,
   };
 
   constructor(
     private _ModalService: ModalService,
     private posService: PosService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getSupplier();
@@ -31,7 +29,7 @@ export class ListSupplierComponent implements OnInit {
     this.posService.getSuppliers().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          this.dataSupplier = <ISupplier[]> data.data;
+          this.dataSupplier = <ISupplier[]>data.data;
           this.load.data = true;
         }, 2000);
       },
@@ -44,5 +42,4 @@ export class ListSupplierComponent implements OnInit {
   openModal(data) {
     this._ModalService.open(data, null);
   }
-
 }

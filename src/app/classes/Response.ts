@@ -1,4 +1,4 @@
 export interface Response {
-    data: Object[],
-    error: string
+  data:  object | object[];
+  error: string;
 }

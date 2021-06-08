@@ -1,7 +1,8 @@
-import { IBuyRequest } from "./IBuyRequest";
+import { IBuyRequest } from './IBuyRequest';
 
 export interface IStockRequest {
-    buy: IBuyRequest;
-    quantity: number;
-    productId: number;
+  id: number;
+  buy: IBuyRequest;
+  quantity: number;
+  productId: number;
 }

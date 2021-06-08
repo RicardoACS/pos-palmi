@@ -1,4 +1,4 @@
 export interface IPriceRequest {
-    value: number,
-    state: number
+  value: number;
+  state: number;
 }

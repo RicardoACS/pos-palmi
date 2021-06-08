@@ -1,7 +1,7 @@
 import { IProduct } from './IProduct';
 
-export interface IPrice {
+export interface IProductIdentifier {
+  id: number;
   value: number;
-  state: number;
   product: IProduct;
 }

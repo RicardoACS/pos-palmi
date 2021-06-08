@@ -13,14 +13,13 @@ import { ModalService } from 'src/app/view/utils/modal/modal.service';
 export class ListCategoryComponent implements OnInit {
   dataCategory: Category[];
   load = {
-    data: false
+    data: false,
   };
 
   constructor(
     private _ModalService: ModalService,
     private posService: PosService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -30,7 +29,7 @@ export class ListCategoryComponent implements OnInit {
     this.posService.getCategories().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          this.dataCategory = <Category[]> data.data;
+          this.dataCategory = <Category[]>data.data;
           this.load.data = true;
         }, 2000);
       },
@@ -43,5 +42,4 @@ export class ListCategoryComponent implements OnInit {
   openModal(data) {
     this._ModalService.open(data, null);
   }
-  
 }

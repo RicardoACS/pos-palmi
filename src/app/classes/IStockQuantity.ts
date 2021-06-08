@@ -1,6 +1,6 @@
-import { IProduct } from "./IProduct";
+import { IProduct } from './IProduct';
 
 export interface IStockQuantity {
-    product: IProduct;
-    stock: number;
+  product: IProduct;
+  stock: number;
 }

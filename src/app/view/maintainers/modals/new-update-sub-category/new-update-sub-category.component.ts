@@ -12,21 +12,20 @@ import { ModalService } from 'src/app/view/utils/modal/modal.service';
 @Component({
   selector: 'app-new-update-sub-category',
   templateUrl: './new-update-sub-category.component.html',
-  styleUrls: ['./new-update-sub-category.component.css']
+  styleUrls: ['./new-update-sub-category.component.css'],
 })
 export class NewUpdateSubCategoryComponent implements OnInit {
-
-  @ViewChild("modalNewUpdateSubCategory") modalTemplateRef: ElementRef;
+  @ViewChild('modalNewUpdateSubCategory') modalTemplateRef: ElementRef;
   subscription: Subscription;
   modalInstance: NgbModalRef;
   newUpdateSubCategory: FormGroup;
   submitted = false;
   load = {
-    title: "Crear nueva",
+    title: 'Crear nueva',
     createUpdateSubCategory: false,
     data: false,
-    createUpdate: "Creando"
-  }
+    createUpdate: 'Creando',
+  };
   dataCategory: Array<Select2OptionData>;
 
   constructor(
@@ -34,15 +33,15 @@ export class NewUpdateSubCategoryComponent implements OnInit {
     private _myModalSerive: ModalService,
     private fb: FormBuilder,
     private posService: PosService
-  ) { 
+  ) {
     this.subscription = this._myModalSerive
       .getMyModalSubjectRef()
-      .subscribe(msg => {
+      .subscribe((msg) => {
         switch (msg.action) {
-          case "OPEN":
+          case 'OPEN':
             this.openModal(msg.data);
             break;
-          case "CLOSE":
+          case 'CLOSE':
             this.closeModal();
             break;
         }
@@ -58,11 +57,12 @@ export class NewUpdateSubCategoryComponent implements OnInit {
     this.posService.getCategories().subscribe(
       (data: Response) => {
         setTimeout(() => {
-          data.data.forEach((element: Category) => {
+          var cat = data.data as object[];
+          cat.forEach((element: Category) => {
             categories.push({
               id: element.id,
-              text: element.name
-            })
+              text: element.name,
+            });
           });
           this.load.data = true;
         }, 2000);
@@ -75,12 +75,15 @@ export class NewUpdateSubCategoryComponent implements OnInit {
   }
 
   formGroupValidation(data) {
-    data != null ? this.load.title = "Editar" : undefined;
+    data != null ? (this.load.title = 'Editar') : undefined;
     this.newUpdateSubCategory = this.fb.group({
       id: [data == null ? undefined : data.id],
-      name: [data == null ? '' : data.name, [Validators.required, Validators.maxLength(100)]],
-      categoryId: [data == null ? '' : data.category.id, [Validators.required]]
-    })
+      name: [
+        data == null ? '' : data.name,
+        [Validators.required, Validators.maxLength(100)],
+      ],
+      categoryId: [data == null ? '' : data.category.id, [Validators.required]],
+    });
   }
 
   get f() {
@@ -90,7 +93,7 @@ export class NewUpdateSubCategoryComponent implements OnInit {
   async onSubmit() {
     this.load.createUpdateSubCategory = true;
     this.submitted = true;
-    if(this.newUpdateSubCategory.invalid) {
+    if (this.newUpdateSubCategory.invalid) {
       this.load.createUpdateSubCategory = false;
       return;
     }
@@ -98,28 +101,33 @@ export class NewUpdateSubCategoryComponent implements OnInit {
     await this.createUpdateSubCategory(this.newUpdateSubCategory.value);
   }
 
-  async createUpdateSubCategory (data) {
-    console.log("data", data)
-    if(data.id === null) {
-      this.load.createUpdate = "Creando";
-      this.posService.createSubCategory(data).subscribe((response:Response) => {
-        this.load.createUpdateSubCategory = false;
-        this.cleanForm();
-      })
+  async createUpdateSubCategory(data) {
+    console.log('data', data);
+    if (data.id === null) {
+      this.load.createUpdate = 'Creando';
+      this.posService
+        .createSubCategory(data)
+        .subscribe((response: Response) => {
+          this.load.createUpdateSubCategory = false;
+          this.cleanForm();
+        });
     } else {
-      this.load.createUpdate = "Modificando";
-      this.posService.updateSubCategory(data.id, data).subscribe((response: Response) => {
-        this.load.createUpdateSubCategory = false;
-        this.closeModalReload();
-
-      });
+      this.load.createUpdate = 'Modificando';
+      this.posService
+        .updateSubCategory(data.id, data)
+        .subscribe((response: Response) => {
+          this.load.createUpdateSubCategory = false;
+          this.closeModalReload();
+        });
     }
   }
 
-
   openModal(data: any) {
     this.formGroupValidation(data);
-    this.modalInstance = this._modalService.open(this.modalTemplateRef, { size: 'lg', backdrop: 'static' });
+    this.modalInstance = this._modalService.open(this.modalTemplateRef, {
+      size: 'lg',
+      backdrop: 'static',
+    });
   }
 
   closeModal() {
@@ -138,7 +146,6 @@ export class NewUpdateSubCategoryComponent implements OnInit {
   cleanForm() {
     this.newUpdateSubCategory.reset();
     this.submitted = false;
-    this.newUpdateSubCategory.get("categoryId").setValue('');
+    this.newUpdateSubCategory.get('categoryId').setValue('');
   }
-
 }

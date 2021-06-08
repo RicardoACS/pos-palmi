@@ -9,27 +9,28 @@ import { ModalService } from 'src/app/view/utils/modal/modal.service';
 @Component({
   selector: 'app-list-product',
   templateUrl: './list-product.component.html',
-  styleUrls: ['./list-product.component.css']
+  styleUrls: ['./list-product.component.css'],
 })
 export class ListProductComponent implements OnInit {
-
   public dataProduct: IPrice[];
   load = {
-    data: false
+    data: false,
   };
 
-  constructor(private _ModalService: ModalService,
-    private posService: PosService) { }
+  constructor(
+    private _ModalService: ModalService,
+    private posService: PosService
+  ) {}
 
   ngOnInit(): void {
     this.getProducts();
   }
 
   getProducts() {
-    this.posService.getProducts("1").subscribe(
+    this.posService.getProducts('1').subscribe(
       (data: Response) => {
         setTimeout(() => {
-          this.dataProduct = <IPrice[]> data.data;
+          this.dataProduct = <IPrice[]>data.data;
           this.load.data = true;
         }, 2000);
       },
@@ -42,5 +43,4 @@ export class ListProductComponent implements OnInit {
   openModal(data) {
     this._ModalService.open(data, null);
   }
-
 }

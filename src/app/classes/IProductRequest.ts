@@ -1,4 +1,4 @@
-import { IPriceRequest } from "./IPriceRequest";
+import { IPriceRequest } from './IPriceRequest';
 
 export interface IProductRequest {
   id: number;

@@ -7,6 +7,7 @@ import { SubCategoryRequest } from '../classes/SubCategoryRequest';
 import { IProductRequest } from '../classes/IProductRequest';
 import { IClientRequest } from '../classes/IClientRequest';
 import { ISupplierRequest } from '../classes/ISupplierRequest';
+import { IStockRequest } from '../classes/IStockRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class PosService {
   }
 
   //#region Category
-  createCategory(data: CategoryRequest) {
+  createCategory = (data: CategoryRequest) => {
     return this.httpClient.post(
       `${this.baseUrl}${Endpoints.ApiCategory}`,
       data,
@@ -32,7 +33,7 @@ export class PosService {
     );
   }
 
-  updateCategory(id: Number, data: CategoryRequest) {
+  updateCategory = (id: number, data: CategoryRequest) => {
     return this.httpClient.put(
       `${this.baseUrl}${Endpoints.ApiCategory}${id}`,
       data,
@@ -40,14 +41,14 @@ export class PosService {
     );
   }
 
-  getCategories() {
+  getCategories = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiCategory}`,
       this.headers
     );
   }
 
-  getCategoriesById(id: Number) {
+  getCategoriesById = (id: number) => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiCategory}${id}`,
       this.headers
@@ -56,7 +57,7 @@ export class PosService {
   //#endregion
 
   //#region SubCategory
-  createSubCategory(data: SubCategoryRequest) {
+  createSubCategory = (data: SubCategoryRequest) => {
     return this.httpClient.post(
       `${this.baseUrl}${Endpoints.ApiSubCategory}`,
       data,
@@ -64,7 +65,7 @@ export class PosService {
     );
   }
 
-  updateSubCategory(id: Number, data: SubCategoryRequest) {
+  updateSubCategory = (id: number, data: SubCategoryRequest) => {
     return this.httpClient.put(
       `${this.baseUrl}${Endpoints.ApiSubCategory}${id}`,
       data,
@@ -72,21 +73,21 @@ export class PosService {
     );
   }
 
-  getSubCategoriesByCategoryId(categoryId: number) {
+  getSubCategoriesByCategoryId = (categoryId: number) => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiSubCategory}${categoryId}/category`,
       this.headers
     );
   }
 
-  getSubCategoryId(id: number) {
+  getSubCategoryId = (id: number) => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiSubCategory}${id}`,
       this.headers
     );
   }
 
-  getSubCategories() {
+  getSubCategories = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiSubCategory}`,
       this.headers
@@ -95,7 +96,7 @@ export class PosService {
   //#endregion
 
   //#region Products
-  createProduct(data: IProductRequest) {
+  createProduct = (data: IProductRequest) => {
     return this.httpClient.post(
       `${this.baseUrl}${Endpoints.ApiProducts}`,
       data,
@@ -103,38 +104,38 @@ export class PosService {
     );
   }
 
-  updateProduct(id: number, data: IProductRequest) {
+  updateProduct = (id: number, data: IProductRequest) => {
     return this.httpClient.put(
       `${this.baseUrl}${Endpoints.ApiProducts}${id}`,
       data,
       this.headers
     );
   }
-  
-  getProductsByIdentifier(identifier: string) {
+
+  getProductsByIdentifier = (identifier: string) => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiProducts}${identifier}`,
       this.headers
     );
-  }
+  };
 
-  updateProductState(id: number, state: number) {
+  updateProductState = (id: number, state: number) => {
     return this.httpClient.put(
       `${this.baseUrl}${Endpoints.ApiProducts}${id}/${state}`,
       this.headers
     );
   }
 
-  getProducts(state: string) {
+  getProducts = (state: string) => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiProducts}${state}/all`,
       this.headers
     );
-  }
+  };
   //#endregion
 
-  //#region 
-  createClient(data: IClientRequest) {
+  //#region Clients
+  createClient = (data: IClientRequest) => {
     return this.httpClient.post(
       `${this.baseUrl}${Endpoints.ApiClients}`,
       data,
@@ -142,7 +143,7 @@ export class PosService {
     );
   }
 
-  updateClient(id: Number, data: IClientRequest) {
+  updateClient = (id: number, data: IClientRequest) => {
     return this.httpClient.put(
       `${this.baseUrl}${Endpoints.ApiClients}${id}`,
       data,
@@ -150,14 +151,14 @@ export class PosService {
     );
   }
 
-  getClient() {
+  getClient = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiClients}`,
       this.headers
     );
   }
 
-  getClientById(id: Number) {
+  getClientById = (id: number) => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiClients}${id}`,
       this.headers
@@ -166,14 +167,29 @@ export class PosService {
   //#endregion
 
   //#region Stock
-  getAllStock() {
+  createStock = (data: IStockRequest) => {
+    return this.httpClient.post(
+      `${this.baseUrl}${Endpoints.ApiStock}`,
+      data,
+      this.headers
+    );
+  }
+
+  updateStock = (buyId: number, stockId: number, data: IStockRequest) => {
+    return this.httpClient.put(
+      `${this.baseUrl}${Endpoints.ApiStock}${buyId}/${stockId}`,
+      data,
+      this.headers
+    );
+  }
+  getAllStock = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiStock}stock`,
       this.headers
     );
   }
 
-  getAllBuyes() {
+  getAllBuyes = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiStock}buyes`,
       this.headers
@@ -182,22 +198,22 @@ export class PosService {
   //#endregion
 
   //#region Supplier
-  createSupplier(data: ISupplierRequest) {
+  createSupplier = (data: ISupplierRequest) => {
     return this.httpClient.post(
       `${this.baseUrl}${Endpoints.ApiSupplier}`,
       data,
       this.headers
     );
-  }
+  };
 
-  updateSupplier(id: Number, data: ISupplierRequest) {
+  updateSupplier = (id: number, data: ISupplierRequest) => {
     return this.httpClient.put(
       `${this.baseUrl}${Endpoints.ApiSupplier}${id}`,
       data,
       this.headers
     );
   }
-  getSuppliers() {
+  getSuppliers = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiSupplier}`,
       this.headers
@@ -206,7 +222,7 @@ export class PosService {
   //#endregion
 
   //#region Channel
-  getChannels() {
+  getChannels = () => {
     return this.httpClient.get(
       `${this.baseUrl}${Endpoints.ApiChannel}`,
       this.headers
